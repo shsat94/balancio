@@ -1,12 +1,8 @@
-using Balancio.ViewModels;
 using Balancio.Models;
 using Balancio.Services;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Balancio.ViewModels;
+using Balancio.Views.Popups;
+using CommunityToolkit.Maui.Extensions;
 
 namespace Balancio.Views;
 
@@ -27,6 +23,7 @@ public partial class DashboardPage : ContentPage
     private readonly DashboardChartDrawable _chartDrawable;
     private readonly DashboardViewModel _viewModel;
     private readonly GoogleSheetService _googleSheetService;
+    private readonly SheetConnectionStore _connectionStore;
 
     public DashboardPage()
     {
@@ -34,6 +31,7 @@ public partial class DashboardPage : ContentPage
 
         _viewModel = new DashboardViewModel();
         _googleSheetService = new GoogleSheetService();
+        _connectionStore = new SheetConnectionStore();
 
         BindingContext = _viewModel;
 
@@ -59,37 +57,9 @@ public partial class DashboardPage : ContentPage
         base.OnAppearing();
 
         // Google Sheet URL
-        const string sheetUrl =
-            "https://docs.google.com/spreadsheets/d/e/2PACX-1vRxSKFR7CPl5U3JGS97n1zoTv6YLKiBxQiQwkPt7gtBG2zWkftZxvVPL09dm8hNeYM3lIxTw_Jjt4dm/pub?output=csv";
 
-        try
-        {
-            // Load data from Google Sheet
-            var categories =
-                await _googleSheetService.LoadCategoriesAsync(sheetUrl);
-
-            // Replace local data with Google Sheet data
-            _viewModel.Balance.Categories.Clear();
-
-            foreach (var category in categories)
-            {
-                _viewModel.Balance.Categories.Add(category);
-            }
-
-            // Assign the same existing colors
-            AssignCategoryColors(_viewModel.Balance.Categories);
-
-            // Update chart data
-            _chartDrawable.UpdateCategories(
-                _viewModel.Balance.Categories);
-
-            BalanceChart.Invalidate();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(
-                $"Google Sheet error: {ex}");
-        }
+        var sheetUrl = _connectionStore.GetLastUsedUrl() ?? "";
+        await LoadSheetDataAsync(sheetUrl);
 
         RootStack.TranslationY = 24;
 
@@ -107,6 +77,63 @@ public partial class DashboardPage : ContentPage
         await AnimateChartAsync();
 
         PulseTotal();
+    }
+
+    private async Task<bool> LoadSheetDataAsync(string sheetUrl)
+    {
+        try
+        {
+            var categories = await _googleSheetService.LoadCategoriesAsync(sheetUrl);
+
+            _viewModel.Balance.Categories.Clear();
+
+            foreach (var category in categories)
+            {
+                _viewModel.Balance.Categories.Add(category);
+            }
+
+            AssignCategoryColors(_viewModel.Balance.Categories);
+
+            _chartDrawable.UpdateCategories(_viewModel.Balance.Categories);
+            BalanceChart.Invalidate();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Google Sheet error: {ex}");
+            await DisplayAlert("Couldn't load sheet", "Check the URL and try again.", "OK");
+            return false;
+        }
+    }
+
+    private async void OnManageSheetsClicked(object sender, EventArgs e)
+    {
+        var listPopup = new SheetListPopup(_connectionStore.GetAll());
+        var result = (await this.ShowPopupAsync<object>(listPopup)).Result;
+
+        if (result is SheetConnection selected)
+        {
+            if (await LoadSheetDataAsync(selected.Url))
+            {
+                _connectionStore.SetLastUsedUrl(selected.Url);
+            }
+        }
+        else if (result is string signal && signal == "ADD_NEW")
+        {
+            var addPopup = new AddSheetPopup();
+            var addResult = (await this.ShowPopupAsync<object>(addPopup)).Result;
+
+            if (addResult is SheetConnection newConnection)
+            {
+                _connectionStore.Add(newConnection);
+
+                if (await LoadSheetDataAsync(newConnection.Url))
+                {
+                    _connectionStore.SetLastUsedUrl(newConnection.Url);
+                }
+            }
+        }
     }
 
     private Task AnimateChartAsync()

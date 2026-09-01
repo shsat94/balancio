@@ -78,6 +78,17 @@
                 </Grid>
             </Border>
 
+            <Button
+                x:Name="ManageSheetsButton"
+                Text="Connect Spreadsheet"
+                FontSize="14"
+                FontAttributes="Bold"
+                BackgroundColor="#1A1A20"
+                TextColor="#FF7A45"
+                CornerRadius="14"
+                HeightRequest="46"
+                Clicked="OnManageSheetsClicked" />
+
             <!-- Column Headers -->
             <Grid
                 ColumnDefinitions="*,Auto,Auto"

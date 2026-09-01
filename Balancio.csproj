@@ -85,6 +85,12 @@
 	  <MauiXaml Update="AppShell.xaml">
 		<Inflator>Runtime</Inflator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Popups\AddSheetPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Popups\SheetListPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

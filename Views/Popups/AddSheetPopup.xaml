@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="Balancio.Views.Popups.AddSheetPopup"
+    x:TypeArguments="x:Object"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <Border
+        BackgroundColor="#1A1A20"
+        StrokeThickness="0"
+        Padding="20"
+        WidthRequest="300">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="20" />
+        </Border.StrokeShape>
+
+        <VerticalStackLayout Spacing="14">
+
+            <Label
+                Text="Add Spreadsheet"
+                FontSize="18"
+                FontAttributes="Bold"
+                TextColor="#FFFFFF" />
+
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Alias" FontSize="12" TextColor="#8A8A93" />
+                <Entry
+                    x:Name="AliasEntry"
+                    Placeholder="e.g. Personal Budget"
+                    PlaceholderColor="#5A5A62"
+                    TextColor="#FFFFFF"
+                    BackgroundColor="#25252C" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Sheet URL" FontSize="12" TextColor="#8A8A93" />
+                <Entry
+                    x:Name="UrlEntry"
+                    Placeholder="https://docs.google.com/..."
+                    PlaceholderColor="#5A5A62"
+                    TextColor="#FFFFFF"
+                    BackgroundColor="#25252C"
+                    Keyboard="Url" />
+            </VerticalStackLayout>
+
+            <Label
+                x:Name="ErrorLabel"
+                TextColor="#FF5C7A"
+                FontSize="12"
+                IsVisible="False" />
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                <Button
+                    Text="Cancel"
+                    BackgroundColor="Transparent"
+                    TextColor="#8A8A93"
+                    Clicked="OnCancelClicked" />
+                <Button
+                    Text="Save"
+                    BackgroundColor="#FF7A45"
+                    TextColor="#FFFFFF"
+                    CornerRadius="10"
+                    Clicked="OnSaveClicked" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
