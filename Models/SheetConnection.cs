@@ -4,4 +4,5 @@ public class SheetConnection
 {
     public string Alias { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
+    public bool IsCurrent { get; set; }
 }

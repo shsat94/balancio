@@ -109,7 +109,8 @@ public partial class DashboardPage : ContentPage
 
     private async void OnManageSheetsClicked(object sender, EventArgs e)
     {
-        var listPopup = new SheetListPopup(_connectionStore.GetAll());
+        var currentUrl = _connectionStore.GetLastUsedUrl() ?? "";
+        var listPopup = new SheetListPopup(_connectionStore, currentUrl);
         var result = (await this.ShowPopupAsync<object>(listPopup)).Result;
 
         if (result is SheetConnection selected)

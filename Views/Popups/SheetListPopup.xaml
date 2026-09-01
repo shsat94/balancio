@@ -41,7 +41,8 @@
                     <DataTemplate x:DataType="models:SheetConnection">
                         <Border
                             BackgroundColor="#25252C"
-                            StrokeThickness="0"
+                            Stroke="{Binding IsCurrent, Converter={StaticResource CurrentBorderColorConverter}}"
+                            StrokeThickness="{Binding IsCurrent, Converter={StaticResource CurrentBorderWidthConverter}}"
                             Padding="14,12"
                             Margin="0,0,0,8">
                             <Border.StrokeShape>
@@ -53,18 +54,34 @@
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
 
-                            <VerticalStackLayout Spacing="2">
-                                <Label
-                                    Text="{Binding Alias}"
-                                    FontSize="15"
-                                    FontAttributes="Bold"
-                                    TextColor="#F2F2F5" />
-                                <Label
-                                    Text="{Binding Url}"
-                                    FontSize="11"
-                                    TextColor="#8A8A93"
-                                    LineBreakMode="TailTruncation" />
-                            </VerticalStackLayout>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label
+                                        Text="{Binding Alias}"
+                                        FontSize="15"
+                                        FontAttributes="Bold"
+                                        TextColor="#F2F2F5" />
+                                    <Label
+                                        Text="{Binding Url}"
+                                        FontSize="11"
+                                        TextColor="#8A8A93"
+                                        LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Text="✕"
+                                    FontSize="14"
+                                    WidthRequest="34"
+                                    HeightRequest="34"
+                                    Padding="0"
+                                    CornerRadius="17"
+                                    BackgroundColor="#3A2530"
+                                    TextColor="#FF5C7A"
+                                    VerticalOptions="Center"
+                                    Clicked="OnDeleteClicked"
+                                    CommandParameter="{Binding .}" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
