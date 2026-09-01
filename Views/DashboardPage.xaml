@@ -7,7 +7,8 @@
     Title="Balancio"
     BackgroundColor="#0E0E12">
 
-    <ScrollView>
+    <Grid>
+        <ScrollView>
 
         <VerticalStackLayout
             x:Name="RootStack"
@@ -91,6 +92,7 @@
 
             <!-- Column Headers -->
             <Grid
+                x:Name="CategoryHeaders"
                 ColumnDefinitions="*,Auto,Auto"
                 ColumnSpacing="15"
                 Padding="16,0">
@@ -248,8 +250,30 @@
 
             </CollectionView>
 
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
 
-    </ScrollView>
+        <Grid
+            x:Name="LoadingOverlay"
+            IsVisible="False"
+            BackgroundColor="#990E0E12"
+            InputTransparent="False">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Spacing="12">
+                <ActivityIndicator
+                    IsRunning="True"
+                    Color="#FF7A45"
+                    WidthRequest="44"
+                    HeightRequest="44" />
+                <Label
+                    Text="Loading connection..."
+                    TextColor="#FFFFFF"
+                    FontSize="14"
+                    HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
 
 </ContentPage>

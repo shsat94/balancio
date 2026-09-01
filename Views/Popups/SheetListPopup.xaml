@@ -5,13 +5,20 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:models="clr-namespace:Balancio.Models">
+    xmlns:models="clr-namespace:Balancio.Models"
+    xmlns:converters="clr-namespace:Balancio.Converters">
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+            <converters:CurrentBorderColorConverter x:Key="CurrentBorderColorConverter" />
+            <converters:CurrentBorderWidthConverter x:Key="CurrentBorderWidthConverter" />
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
 
     <Border
-        BackgroundColor="#1A1A20"
-        StrokeThickness="0"
-        Padding="20"
-        WidthRequest="300">
+            BackgroundColor="#1A1A20"
+            StrokeThickness="0"
+            Padding="20"
+            WidthRequest="300">
         <Border.StrokeShape>
             <RoundRectangle CornerRadius="20" />
         </Border.StrokeShape>
@@ -102,5 +109,5 @@
                 Clicked="OnCancelClicked" />
 
         </VerticalStackLayout>
-    </Border>
+        </Border>
 </toolkit:Popup>

@@ -35,6 +35,11 @@ public class SheetConnectionStore
 
         var json = JsonSerializer.Serialize(all);
         Preferences.Default.Set(ConnectionsKey, json);
+
+        if (GetLastUsedUrl() == connection.Url)
+        {
+            Preferences.Default.Remove(LastUsedKey);
+        }
     }
     public void Delete(SheetConnection connection)
     {

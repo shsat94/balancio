@@ -24,6 +24,8 @@ public partial class DashboardPage : ContentPage
     private readonly DashboardViewModel _viewModel;
     private readonly GoogleSheetService _googleSheetService;
     private readonly SheetConnectionStore _connectionStore;
+    private bool _isLoading;
+    private int _loadRequestId;
 
     public DashboardPage()
     {
@@ -58,7 +60,10 @@ public partial class DashboardPage : ContentPage
 
         // Google Sheet URL
 
-        var sheetUrl = _connectionStore.GetLastUsedUrl() ?? "";
+        var lastUsedUrl = _connectionStore.GetLastUsedUrl();
+        var sheetUrl = _connectionStore.GetAll().Any(c => c.Url == lastUsedUrl)
+            ? lastUsedUrl ?? ""
+            : "";
         await LoadSheetDataAsync(sheetUrl);
 
         RootStack.TranslationY = 24;
@@ -81,16 +86,34 @@ public partial class DashboardPage : ContentPage
 
     private async Task<bool> LoadSheetDataAsync(string sheetUrl)
     {
+        var requestId = Interlocked.Increment(ref _loadRequestId);
+        SetLoading(true);
+
         try
         {
+            _viewModel.Balance.Categories.Clear();
+            CategoryHeaders.IsVisible = false;
+
+            if (string.IsNullOrWhiteSpace(sheetUrl))
+            {
+                _chartDrawable.UpdateCategories(_viewModel.Balance.Categories);
+                BalanceChart.Invalidate();
+                return true;
+            }
+
             var categories = await _googleSheetService.LoadCategoriesAsync(sheetUrl);
 
-            _viewModel.Balance.Categories.Clear();
+            if (requestId != _loadRequestId)
+            {
+                return false;
+            }
 
             foreach (var category in categories)
             {
                 _viewModel.Balance.Categories.Add(category);
             }
+
+            CategoryHeaders.IsVisible = _viewModel.Balance.Categories.Count > 0;
 
             AssignCategoryColors(_viewModel.Balance.Categories);
 
@@ -105,10 +128,29 @@ public partial class DashboardPage : ContentPage
             await DisplayAlert("Couldn't load sheet", "Check the URL and try again.", "OK");
             return false;
         }
+        finally
+        {
+            if (requestId == _loadRequestId)
+            {
+                SetLoading(false);
+            }
+        }
+    }
+
+    private void SetLoading(bool isLoading)
+    {
+        _isLoading = isLoading;
+        LoadingOverlay.IsVisible = isLoading;
+        ManageSheetsButton.IsEnabled = !isLoading;
     }
 
     private async void OnManageSheetsClicked(object sender, EventArgs e)
     {
+        if (_isLoading)
+        {
+            return;
+        }
+
         var currentUrl = _connectionStore.GetLastUsedUrl() ?? "";
         var listPopup = new SheetListPopup(_connectionStore, currentUrl);
         var result = (await this.ShowPopupAsync<object>(listPopup)).Result;
