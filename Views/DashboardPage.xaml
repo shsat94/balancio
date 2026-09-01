@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Balancio.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Balancio"
+    BackgroundColor="#0E0E12">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            x:Name="RootStack"
+            Padding="24,30,24,40"
+            Spacing="26"
+            Opacity="0">
+
+            <!-- Header -->
+            <VerticalStackLayout Spacing="2">
+                <Label
+                    Text="Balancio"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    TextColor="#FFFFFF" />
+                <Label
+                    Text="Your financial overview"
+                    FontSize="14"
+                    TextColor="#8A8A93" />
+            </VerticalStackLayout>
+
+            <!-- Doughnut Chart Card -->
+            <Border
+                BackgroundColor="#1A1A20"
+                StrokeThickness="0"
+                Padding="20"
+                HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="Black" Opacity="0.4" Radius="20" Offset="0,8" />
+                </Border.Shadow>
+
+                <Grid
+                    HeightRequest="280"
+                    WidthRequest="280"
+                    HorizontalOptions="Center">
+
+                    <GraphicsView
+                        x:Name="BalanceChart"
+                        HeightRequest="280"
+                        WidthRequest="280" />
+
+                    <!-- Center Text -->
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Spacing="2">
+
+                        <Label
+                            x:Name="TotalLabel"
+                            Text="{Binding Balance.TotalBalance, StringFormat='₹{0:N0}'}"
+                            FontSize="30"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            TextColor="#FFFFFF" />
+
+                        <Label
+                            Text="TOTAL BALANCE"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.2"
+                            HorizontalTextAlignment="Center"
+                            TextColor="#8A8A93" />
+
+                    </VerticalStackLayout>
+
+                </Grid>
+            </Border>
+
+            <!-- Column Headers -->
+            <Grid
+                ColumnDefinitions="*,Auto,Auto"
+                ColumnSpacing="15"
+                Padding="16,0">
+
+                <Label
+                    Text="CATEGORY"
+                    FontSize="11"
+                    CharacterSpacing="1"
+                    FontAttributes="Bold"
+                    TextColor="#6E6E76" />
+
+                <Label
+                    Grid.Column="1"
+                    Text="MONTHLY"
+                    FontSize="11"
+                    CharacterSpacing="1"
+                    FontAttributes="Bold"
+                    TextColor="#6E6E76" />
+
+                <Label
+                    Grid.Column="2"
+                    Text="TOTAL"
+                    FontSize="11"
+                    CharacterSpacing="1"
+                    FontAttributes="Bold"
+                    TextColor="#6E6E76" />
+
+            </Grid>
+
+            <!-- Category List -->
+            <CollectionView
+                ItemsSource="{Binding Balance.Categories}"
+                SelectionMode="None">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <toolkit:Expander>
+
+                            <!-- Category Header -->
+                            <toolkit:Expander.Header>
+
+                                <Border
+                                    BackgroundColor="#1A1A20"
+                                    StrokeThickness="0"
+                                    Padding="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="16" />
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black" Opacity="0.3" Radius="12" Offset="0,4" />
+                                    </Border.Shadow>
+
+                                    <Grid ColumnDefinitions="4,*,Auto,Auto" ColumnSpacing="14" Padding="0,16,16,16">
+
+                                        <!-- Colored accent stripe -->
+                                        <BoxView
+                                            Grid.Column="0"
+                                            Color="{Binding ColorHex}"
+                                            CornerRadius="4,0,0,4"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                            <Ellipse
+                                                Fill="{Binding ColorHex}"
+                                                WidthRequest="10"
+                                                HeightRequest="10"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Text="{Binding Name}"
+                                                FontSize="16"
+                                                FontAttributes="Bold"
+                                                VerticalOptions="Center"
+                                                TextColor="#F2F2F5" />
+                                        </HorizontalStackLayout>
+
+                                        <Label
+                                            Grid.Column="2"
+                                            Text="{Binding MonthlyAmount, StringFormat='₹{0:N0}'}"
+                                            FontSize="15"
+                                            VerticalOptions="Center"
+                                            TextColor="#A5A5AD" />
+
+                                        <Label
+                                            Grid.Column="3"
+                                            Text="{Binding TotalAmount, StringFormat='₹{0:N0}'}"
+                                            FontSize="16"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="Center"
+                                            TextColor="#FFFFFF" />
+
+                                    </Grid>
+
+                                </Border>
+
+                            </toolkit:Expander.Header>
+
+                            <!-- Monthly History -->
+                            <toolkit:Expander.Content>
+
+                                <Border
+                                    BackgroundColor="#141418"
+                                    StrokeThickness="0"
+                                    Margin="4,6,4,0"
+                                    Padding="20,14">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+
+                                    <VerticalStackLayout
+                                        Spacing="12"
+                                        BindableLayout.ItemsSource="{Binding History}">
+
+                                        <BindableLayout.ItemTemplate>
+
+                                            <DataTemplate>
+
+                                                <Grid ColumnDefinitions="*,Auto">
+
+                                                    <Label
+                                                        Text="{Binding Month}"
+                                                        FontSize="14"
+                                                        TextColor="#9494A0" />
+
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Text="{Binding Amount, StringFormat='₹{0:N0}'}"
+                                                        FontSize="14"
+                                                        FontAttributes="Bold"
+                                                        TextColor="#E8E8EC" />
+
+                                                </Grid>
+
+                                            </DataTemplate>
+
+                                        </BindableLayout.ItemTemplate>
+
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                            </toolkit:Expander.Content>
+
+                        </toolkit:Expander>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

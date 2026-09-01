@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="Balancio.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Balancio"
+    BackgroundColor="#F7F7F8">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="24"
+            Spacing="20">
+
+            <Label
+                Text="Balancio"
+                FontSize="30"
+                FontAttributes="Bold"
+                TextColor="#171717" />
+
+            <Label
+                Text="September 2026"
+                FontSize="16"
+                TextColor="#737373" />
+
+            <Grid
+                HeightRequest="280"
+                WidthRequest="280"
+                HorizontalOptions="Center">
+
+                <GraphicsView
+                    x:Name="BalanceChart" />
+
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Spacing="2">
+
+                    <Label
+                        Text="₹85,000"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        HorizontalTextAlignment="Center"
+                        TextColor="#171717" />
+
+                    <Label
+                        Text="Total"
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"
+                        TextColor="#737373" />
+
+                </VerticalStackLayout>
+
+            </Grid>
+
+            <VerticalStackLayout Spacing="10">
+
+                <toolkit:Expander
+                    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+                    <toolkit:Expander.Header>
+
+                        <Grid
+                            ColumnDefinitions="*,Auto,Auto"
+                            Padding="12,16"
+                            BackgroundColor="White">
+
+                            <Label
+                                Text="🍔  Food"
+                                FontSize="16" />
+
+                            <Label
+                                Grid.Column="1"
+                                Text="₹5,000"
+                                FontSize="16" />
+
+                            <Label
+                                Grid.Column="2"
+                                Text="₹25,000"
+                                FontSize="16"
+                                Margin="30,0,0,0" />
+
+                        </Grid>
+
+                    </toolkit:Expander.Header>
+
+                    <toolkit:Expander.Content>
+
+                        <VerticalStackLayout
+                            Padding="20,10"
+                            BackgroundColor="#EEEEF0">
+
+                            <Label Text="September     ₹5,000" />
+                            <Label Text="August         ₹4,500" />
+                            <Label Text="July           ₹3,800" />
+
+                        </VerticalStackLayout>
+
+                    </toolkit:Expander.Content>
+
+                </toolkit:Expander>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

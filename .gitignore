@@ -1,0 +1,125 @@
+# ==============================
+# .NET / Visual Studio
+# ==============================
+
+.vs/
+bin/
+obj/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM/
+ARM64/
+
+# Test results
+TestResults/
+*.trx
+
+# ==============================
+# NuGet
+# ==============================
+
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# ==============================
+# .NET MAUI
+# ==============================
+
+# Android
+*.apk
+*.aab
+*.apks
+*.keystore
+*.jks
+
+# Android generated/build files
+**/Android/bin/
+**/Android/obj/
+
+# iOS
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Mac Catalyst
+**/MacCatalyst/bin/
+**/MacCatalyst/obj/
+
+# Windows
+**/Windows/bin/
+**/Windows/obj/
+
+# MAUI generated files
+**/Platforms/Android/bin/
+**/Platforms/Android/obj/
+**/Platforms/iOS/bin/
+**/Platforms/iOS/obj/
+**/Platforms/MacCatalyst/bin/
+**/Platforms/MacCatalyst/obj/
+**/Platforms/Windows/bin/
+**/Platforms/Windows/obj/
+
+# ==============================
+# Visual Studio Code
+# ==============================
+
+.vscode/
+
+# Keep VS Code settings if you want them:
+# !.vscode/settings.json
+
+# ==============================
+# Rider / JetBrains
+# ==============================
+
+.idea/
+*.sln.iml
+
+# ==============================
+# Logs
+# ==============================
+
+*.log
+
+# ==============================
+# OS files
+# ==============================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Temporary files
+# ==============================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# ==============================
+# Publish
+# ==============================
+
+publish/
+artifacts/
+
+# ==============================
+# MAUI generated app packages
+# ==============================
+
+AppPackages/
+BundleArtifacts/

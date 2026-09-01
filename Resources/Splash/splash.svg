@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 400 200">
+
+	<rect width="400"
+          height="200"
+          fill="#111827"/>
+
+	<circle cx="150"
+            cy="100"
+            r="45"
+            fill="none"
+            stroke="#3FD6A0"
+            stroke-width="12"/>
+
+	<text x="215"
+          y="112"
+          font-family="Arial"
+          font-size="38"
+          font-weight="bold"
+          fill="white">
+		Balancio
+	</text>
+
+</svg>
